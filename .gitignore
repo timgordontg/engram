@@ -1,0 +1,24 @@
+# Never commit a personal memory store — these hold private context.
+*.db
+*.db-wal
+*.db-shm
+
+# Local battle-test notes / private working backlog — durable items live in ROADMAP + engrim.
+FIELD_NOTES.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+env/
+.env

@@ -1,0 +1,49 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/engrim-bootstrap.sh",
+            "timeout": 600
+          },
+          {
+            "type": "command",
+            "command": "[ -x \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim ] && \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim hook || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -x \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim ] && \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim assist || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -x \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim ] && \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim log --hook || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -x \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim ] && \"${CLAUDE_PLUGIN_DATA}\"/venv/bin/engrim sync --claude || true"
+          }
+        ]
+      }
+    ]
+  }
+}

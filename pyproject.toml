@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engrim"
+version = "0.6.4"
+description = "Project-scoped, cross-session memory for AI coding agents — hybrid keyword+semantic retrieval over a tagged SQLite store."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Tim Gordon" }]
+keywords = ["ai", "agents", "memory", "context", "retrieval", "sqlite", "claude-code", "llm", "rag"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["model2vec>=0.3"]
+
+[project.urls]
+Homepage = "https://github.com/timgordontg/engrim"
+
+[project.scripts]
+engrim = "engrim.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

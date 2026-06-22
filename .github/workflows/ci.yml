@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ENGRIM_EMBED: "off"          # CI stays lexical + offline; `pip install .` still verifies model2vec resolves
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package (verifies pip install + console script)
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+      - name: Smoke-test the installed console script
+        run: |
+          engrim --help
+          engrim add -p /ci -t fact -s "ci smoke" && engrim recall -p /ci -q "ci smoke"
+      - name: Run test suite
+        run: |
+          pip install pytest
+          pytest -q

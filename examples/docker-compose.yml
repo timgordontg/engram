@@ -1,0 +1,29 @@
+# Share ONE engrim memory store across every container + the host.
+#
+# Two ideas make it work no matter how filesystems differ:
+#   1. ENGRIM_DB points every container at the same store, mounted from one host directory.
+#   2. ENGRIM_PROJECT is a STABLE tag, so a project resolves to the same name on the host
+#      (e.g. /home/you/my-app) and inside a container (e.g. /app) — paths differ, tag doesn't.
+#
+# On the host, export the same two values and you read/write the same memory from anywhere:
+#   export ENGRIM_DB=~/.engrim/memory.db ENGRIM_PROJECT=my-app
+#
+# SQLite runs in WAL mode (concurrent readers, serialized writers) — perfect for a shared
+# LOCAL volume. Don't put a single store on a network filesystem (NFS/SMB).
+
+services:
+  app:
+    image: your-app:latest
+    environment:
+      ENGRIM_DB: /memory/memory.db   # shared store path inside the container
+      ENGRIM_PROJECT: my-app         # stable tag across host + all containers
+    volumes:
+      - ~/.engrim:/memory            # one host dir, shared by every service below
+
+  worker:
+    image: your-worker:latest
+    environment:
+      ENGRIM_DB: /memory/memory.db
+      ENGRIM_PROJECT: my-app         # same tag -> same project memory as `app`
+    volumes:
+      - ~/.engrim:/memory
